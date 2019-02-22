@@ -1,0 +1,19 @@
+{
+  "name": "svn-code-line",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reidsu/svn-code-line.git"
+  },
+  "author": "suhe <suhe@hikvision.com.cn>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reidsu/svn-code-line/issues"
+  },
+  "homepage": "https://github.com/reidsu/svn-code-line#readme"
+}
