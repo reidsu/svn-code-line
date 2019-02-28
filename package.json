@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron main/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/reidsu/svn-code-line/issues"
   },
-  "homepage": "https://github.com/reidsu/svn-code-line#readme"
+  "homepage": "https://github.com/reidsu/svn-code-line#readme",
+  "devDependencies": {
+    "electron": "^4.0.6"
+  }
 }
