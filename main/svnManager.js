@@ -9,12 +9,10 @@ class SVNManager {
     this.password = password;
     this.account = account;
   }
-  setProjectPath(projectPath) {
-    this.projectPath = projectPath;
-  }
 
-  findLogs() {
-    const commond = `svn log ${this.projectPath}`;
+
+  findLogs(projectPath) {
+    const commond = `svn log ${projectPath}`;
     const buf = execSync(commond);
     const resource = buf.toString().split("------------------------------------------------------------------------");
 
@@ -37,6 +35,4 @@ class SVNManager {
 
 const sm = new SVNManager();
 
-sm.setting("suhe", "su965531777HE.");
-sm.setProjectPath("https://192.0.0.241/Civil-Platform/Product/ys7/openweb_node/branches/v3.9.5");
-sm.findLogs()
+sm.findLogs("https://192.0.0.241/Civil-Platform/Product/ys7/openweb_node/branches/v3.9.5")
