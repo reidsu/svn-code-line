@@ -1,14 +1,21 @@
-const { app, BrowserWindow } = require('electron')
+const {
+  app,
+  BrowserWindow
+} = require('electron')
 const path = require("path");
 // 保持对window对象的全局引用，如果不这么做的话，当JavaScript对象被
 // 垃圾回收的时候，window对象将会自动的关闭
 let win
 
-function createWindow () {
+function createWindow() {
   // 创建浏览器窗口。
-  win = new BrowserWindow({ width: 800, height: 600,   webPreferences: { 
-    webSecurity: process.env.NODE_ENV !== 'development' 
-  } })
+  win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      webSecurity: process.env.NODE_ENV !== 'development'
+    }
+  })
   const web = path.join(__dirname, "../web/dist/index.html")
   // 然后加载应用的 index.html。
   win.loadFile(web)

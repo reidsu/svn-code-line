@@ -1,0 +1,110 @@
+.svn-btn {
+  background: #0d4d78;
+  color: #fff;
+  padding: 12px 40px;
+}
+.svn-btn:hover,
+.svn-btn:active,
+.svn-btn:focus {
+  color: #fff;
+  background: #093654;
+}
+.svn-btn.is-disabled {
+  background: #eee;
+}
+.svn-btn.is-disabled:hover {
+  background: #eee;
+}
+.el-message {
+  top: 40%;
+  transform: translate(-50%);
+}
+.svn-login {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fff;
+}
+.svn-login__title {
+  height: 180px;
+  background: #093654;
+}
+.svn-login__title--inner {
+  font-size: 36px;
+  text-align: center;
+  color: #fff;
+  line-height: 180px;
+}
+.svn-login__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+.svn-login__form .el-form {
+  width: 50%;
+  margin: 0 auto;
+}
+.svn-login__form .svn-btn {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 26px;
+}
+.svn-header {
+  display: flex;
+  line-height: 60px;
+  box-shadow: 0 0 10px 0 rgba(9, 54, 84, 0.3);
+  z-index: 100;
+}
+.svn-header__title {
+  font-size: 18px;
+  color: #093654;
+}
+.svn-header__title--wrap {
+  flex: 1;
+}
+.svn-header__username {
+  font-size: 14px;
+  color: #666;
+}
+.svn-log {
+  height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+}
+.svn-log__search {
+  display: flex;
+}
+.svn-log__search .el-input {
+  flex: 1;
+  width: 100%;
+}
+.svn-log__search .el-button {
+  margin-left: 20px;
+}
+.svn-log__empty {
+  font-size: 16px;
+  color: #aaa;
+  text-align: center;
+  line-height: 40px;
+  padding: 140px;
+}
+.svn-log__btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  text-align: right;
+  box-shadow: 0 0 10px 0 rgba(9, 54, 84, 0.3);
+  z-index: 100;
+  padding: 10px 20px;
+}
+.svn-log__table {
+  box-shadow: 0 0 10px 0 rgba(9, 54, 84, 0.1);
+}
+.svn-log__table--wrap {
+  padding: 20px 0 60px;
+}

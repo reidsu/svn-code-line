@@ -1,0 +1,142 @@
+@import "./theme.less";
+
+// button
+.svn-btn {
+  background: @btnBg;
+  color: #fff;
+  padding: 12px 40px;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #fff;
+    background: @themeColor;
+  }
+
+  &.is-disabled {
+    background: #eee;
+
+    &:hover {
+      background: #eee;
+    }
+  }
+}
+
+// 提示样式覆盖
+.el-message {
+  top: 40%;
+  transform: translate(-50%);
+}
+
+// 登录
+.svn-login {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fff;
+
+  &__title {
+    @titleH: 180px;
+    height: @titleH;
+    background: @themeColor;
+
+    &--inner {
+      font-size: 36px;
+      text-align: center;
+      color: #fff;
+      line-height: @titleH;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+
+    .el-form {
+      width: 50%;
+      margin: 0 auto;
+    }
+
+    .svn-btn {
+      display: block;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 26px;
+    }
+  }
+}
+
+// header
+.svn-header {
+  display: flex;
+  line-height: 60px;
+  box-shadow: 0 0 10px 0 rgba(9, 54, 84, 0.3);
+  z-index: 100;
+
+  &__title {
+    &--wrap {
+      flex: 1;
+    }
+
+    font-size: 18px;
+    color: @themeColor;
+  }
+
+  &__info {}
+
+  &__username {
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+// 日志记录展示
+.svn-log {
+  height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__search {
+    display: flex;
+
+    .el-input {
+      flex: 1;
+      width: 100%;
+    }
+
+    .el-button {
+      margin-left: 20px;
+    }
+  }
+
+  &__empty {
+    font-size: 16px;
+    color: #aaa;
+    text-align: center;
+    line-height: 40px;
+    padding: 140px;
+  }
+
+  &__btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    text-align: right;
+    box-shadow: 0 0 10px 0 rgba(9, 54, 84, 0.3);
+    z-index: 100;
+    padding: 10px 20px;
+  }
+
+  &__table {
+    &--wrap {
+      padding: 20px 0 60px;
+    }
+
+    box-shadow: 0 0 10px 0 rgba(9, 54, 84, 0.1);
+  }
+}
