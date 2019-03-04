@@ -1,5 +1,5 @@
 const { execSync } = require('child_process');
-let iconv = require('iconv-lite');
+const iconv = require('iconv-lite');
 
 class SVNManager {
   constructor() {
@@ -11,11 +11,11 @@ class SVNManager {
   }
 
 
-  findLogs(projectPath) {
+  getCommitList(projectPath) {
     const commond = `svn log ${projectPath}`;
     const buf = execSync(commond);
-    const resource = buf.toString().split("------------------------------------------------------------------------");
-
+    const utf8Buf = iconv.decode(new Buffer(buf), "GBK");
+    const resource = utf8Buf.split("------------------------------------------------------------------------");
     const data = resource.filter(a => a);
     const result = data.map(str => {
       const info = str.split("|");
@@ -28,11 +28,31 @@ class SVNManager {
         }
       } catch(_) {}
     });   
-    console.log(result);  
     return result;
+  }
+  isExist() {
+    const commond = `svn --help`;
+    const buf = execSync(commond);
+    const utf8Buf = iconv.decode(new Buffer(buf), "GBK");
+    if (utf8Buf.search("usage: svn <subcommand> [options] [args]")) {
+      return true;
+    }
+    return false;
+  }
+  getCountByReverionAndBranch(branch, fromVersion, lastVersion) {
+    const version = `-r${fromVersion}${lastVersion ? ":" + lastVersion : ""}`
+    const commond = `svn diff ${version} ${branch}`;
+    const buf = execSync(commond);
+    return buf.toString().match(/\n\+\s/g).length;
   }
 }
 
 const sm = new SVNManager();
 
-sm.findLogs("https://192.0.0.241/Civil-Platform/Product/ys7/openweb_node/branches/v3.9.5")
+// // sm.getCommitList("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1")
+
+// // console.log(sm.isExist());
+
+// const count = sm.getCountByReverionAndBranch("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1", '5547');
+
+// console.log(count);
