@@ -13,7 +13,7 @@ function createWindow() {
     webSecurity: process.env.NODE_ENV !== 'development' 
   } })
   // const web = path.join(__dirname, "../web/dist/index.html") 
-  const web = "http://10.10.34.55:8080"
+  const web = "http://127.0.0.1:8080"
   // 然后加载应用的 index.html。
   win.loadURL(web)
   // win.loadFile(web)
