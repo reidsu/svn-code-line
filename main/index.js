@@ -9,16 +9,15 @@ let win
 
 function createWindow() {
   // 创建浏览器窗口。
-  win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      webSecurity: process.env.NODE_ENV !== 'development'
-    }
-  })
-  const web = path.join(__dirname, "../web/dist/index.html")
+  win = new BrowserWindow({ width: 800, height: 600,   webPreferences: { 
+    webSecurity: process.env.NODE_ENV !== 'development' 
+  } })
+  // const web = path.join(__dirname, "../web/dist/index.html") 
+  const web = "http://127.0.0.1:8080"
   // 然后加载应用的 index.html。
-  win.loadFile(web)
+  win.loadURL(web)
+  // win.loadFile(web)
+
 
   // 打开开发者工具
   win.webContents.openDevTools()
@@ -30,6 +29,10 @@ function createWindow() {
     // 与此同时，你应该删除相应的元素。
     win = null
   })
+  ipcMain.on("svn-logs-get", (event) => {
+    console.log("svn-logs-get");
+    event.returnValue = 'pong'
+  });
 }
 
 // Electron 会在初始化后并准备
