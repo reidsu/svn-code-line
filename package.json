@@ -18,5 +18,8 @@
   "homepage": "https://github.com/reidsu/svn-code-line#readme",
   "devDependencies": {
     "electron": "^4.0.6"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.4.24"
   }
 }
