@@ -14,7 +14,7 @@ class SVNManager {
   getCommitList(projectPath) {
     const commond = `svn log ${projectPath}`;
     const buf = execSync(commond);
-    const utf8Buf = iconv.decode(new Buffer(buf), "GBK");
+    const utf8Buf = iconv.decode(new Buffer.from(buf), "GBK");
     const resource = utf8Buf.split("------------------------------------------------------------------------");
     const data = resource.filter(a => a);
     const result = data.map(str => {
@@ -24,7 +24,7 @@ class SVNManager {
           version: info[0].replace(/\n|\s/g, ""),
           author: info[1].replace(/\s/g, ""),
           time: info[2].substr(0, 20),
-          message: info[3].replace(/^.+\r\n\r\n|\n/g, "")
+          message: info[3].replace(/^.+\r\n\r\n|\n|\r/g, "")
         }
       } catch(_) {}
     });   
@@ -33,7 +33,7 @@ class SVNManager {
   isExist() {
     const commond = `svn --help`;
     const buf = execSync(commond);
-    const utf8Buf = iconv.decode(new Buffer(buf), "GBK");
+    const utf8Buf = iconv.decode(new Buffer.from(buf), "GBK");
     if (utf8Buf.search("usage: svn <subcommand> [options] [args]")) {
       return true;
     }
@@ -47,10 +47,14 @@ class SVNManager {
   }
 }
 
+
+
 const sm = new SVNManager();
+// sm.isExist();
+module.exports = sm;
 
-// // sm.getCommitList("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1")
-
+// const data = sm.getCommitList("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1")
+// console.log(data);
 // // console.log(sm.isExist());
 
 // const count = sm.getCountByReverionAndBranch("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1", '5547');

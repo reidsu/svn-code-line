@@ -16,10 +16,15 @@
         </el-form-item>
       </el-form>
     </div>
+    <el-button @click="testApi1">接口测试：isExist</el-button>
+    <el-button @click="testApi2">接口测试：getCommitList</el-button>
+    <el-button @click="testApi3">接口测试：getCountByReverionAndBranch</el-button>
   </div>
 </template>
 
 <script>
+import svnProvider from "../../api/SVNProvider.js";
+
 export default {
   data() {
     const username = (rule, value, callback) => {
@@ -84,6 +89,27 @@ export default {
           return false;
         }
       });
+    },
+    testApi1() {
+      console.log("接口测试：isExist");
+      svnProvider.isExist()
+      .then(res=> console.log(res))
+      .catch(err=> console.log(err))
+    },
+    async testApi2() {
+      console.log("接口测试：getCommitList");
+      await svnProvider.getCommitList("asd").then((res) => {
+        console.log(res);
+      }).catch(err => console.log(err))
+      await svnProvider.getCommitList("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1")
+      .then(res=> console.log(res)).catch(err=> console.log(err))
+    },
+    testApi3() {
+      console.log("接口测试：getCountByReverionAndBranch");
+      svnProvider.getCountByReverionAndBranch("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1", "5547")
+      .then((res) => {
+        console.log(res);
+      }).catch(err => console.log(res))
     }
   }
 };
