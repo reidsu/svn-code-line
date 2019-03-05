@@ -2,9 +2,10 @@
   "name": "svn-code-line",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main/index.js",
   "scripts": {
-    "start": "electron main/index.js"
+    "start": "electron main/index.js",
+    "dist": "electron-builder -w --x64"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,21 @@
   },
   "homepage": "https://github.com/reidsu/svn-code-line#readme",
   "devDependencies": {
-    "electron": "^4.0.6"
+    "electron": "^4.0.6",
+    "electron-builder": "^20.38.5"
   },
   "dependencies": {
     "iconv-lite": "^0.4.24"
+  },
+  "build": {
+    "productName": "SVN代码行数GUI展示工具",
+    "appId": "your.id",
+    "win": {
+      "icon": "icon/logo.ico",
+      "target": ["nsis", "zip"]
+    },
+    "nsis": {
+      "installerIcon": "icon/setup.ico"
+    }
   }
 }
