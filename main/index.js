@@ -1,6 +1,7 @@
 const {
   app,
   BrowserWindow,
+  Tray,
   ipcMain
 } = require('electron')
 const path = require("path");
@@ -10,12 +11,16 @@ const ipcManager = require("./ipcManager");
 let win
 
 function createWindow() {
+
   // 创建浏览器窗口。
-  win = new BrowserWindow({ width: 800, height: 600,   webPreferences: { 
-    webSecurity: process.env.NODE_ENV !== 'development' 
+  win = new BrowserWindow({ width: 800, height: 600,  
+    opacity: 0.98,
+    webPreferences: { 
+      webSecurity: process.env.NODE_ENV !== 'development' 
   } })
+
   // const web = path.join(__dirname, "../web/dist/index.html") 
-  const web = "http://127.0.0.1:8080"
+  const web = "http://127.0.0.1:8083"
   // 然后加载应用的 index.html。
   win.loadURL(web)
   // win.loadFile(web)
@@ -43,7 +48,6 @@ function createWindow() {
 // 创建浏览器窗口时，调用这个函数。
 // 部分 API 在 ready 事件触发后才能使用。
 app.on('ready', createWindow)
-
 // 当全部窗口关闭时退出。
 app.on('window-all-closed', () => {
   // 在 macOS 上，除非用户用 Cmd + Q 确定地退出，

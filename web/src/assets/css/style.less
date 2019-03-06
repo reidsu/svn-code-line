@@ -1,5 +1,12 @@
 @import "./theme.less";
 
+
+//dialog
+
+.el-dialog__footer {
+  text-align: center;
+}
+
 // button
 .svn-btn {
   background: @btnBg;
@@ -138,5 +145,31 @@
     }
 
     box-shadow: 0 0 10px 0 rgba(9, 54, 84, 0.1);
+  }
+}
+
+/* home style: */
+
+.svn-home__form {
+  padding: 10px;
+  overflow: auto;
+  max-height: 340px;
+  &__group--action {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 16px;
+    i {
+      margin-right: 10px;
+    }
+    i:hover {
+      color: blue;
+    }
+  }
+}
+
+// branch
+.svn-branch__add {
+  .el-select {
+    width: 100%;
   }
 }

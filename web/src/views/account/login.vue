@@ -81,6 +81,7 @@ export default {
   methods: {
     // 登录
     login() {
+      this.$router.push("/home");
       this.$refs.form.validate(valid => {
         if (valid) {
           console.log("登录逻辑");
@@ -105,11 +106,11 @@ export default {
       .then(res=> console.log(res)).catch(err=> console.log(err))
     },
     testApi3() {
-      console.log("接口测试：getCountByReverionAndBranch");
-      svnProvider.getCountByReverionAndBranch("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1", "5547")
-      .then((res) => {
-        console.log(res);
-      }).catch(err => console.log(res))
+      // console.log("接口测试：getCountByReverionAndBranch");
+      // svnProvider.getCountByReverionAndBranch("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1", "5547")
+      // .then((res) => {
+      //   console.log(res);
+      // }).catch(err => console.log(res))
     }
   }
 };
