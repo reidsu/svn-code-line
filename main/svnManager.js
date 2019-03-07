@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const { execSync, exec } = require('child_process');
 const iconv = require('iconv-lite');
 
 class SVNManager {
@@ -11,10 +11,14 @@ class SVNManager {
   }
 
 
-  getCommitList(projectPath) {
-    const commond = `svn log ${projectPath}`;
-    const buf = execSync(commond);
-    const utf8Buf = iconv.decode(new Buffer.from(buf), "GBK");
+  async getCommitList(projectPath) {
+    const commond = `svn log ${projectPath} --stop-on-copy`;
+    const buf = await new Promise((r) => {
+      exec(commond, { encoding: 'binary', maxBuffer: 200 * 1024 * 20}, (err, b) => {
+        r(b);
+      })
+    });
+    const utf8Buf = iconv.decode(new Buffer.from(buf, "binary"), "cp936");
     const resource = utf8Buf.split("------------------------------------------------------------------------");
     const data = resource.filter(a => a);
     const result = data.map(str => {
@@ -28,7 +32,7 @@ class SVNManager {
         }
       } catch(_) {}
     });   
-    return result;
+    return result.filter(a => a);
   }
   isExist() {
     const commond = `svn --help`;
@@ -39,11 +43,39 @@ class SVNManager {
     }
     return false;
   }
-  getCountByReverionAndBranch(branch, fromVersion, lastVersion) {
-    const version = `-r${fromVersion}${lastVersion ? ":" + lastVersion : ""}`
+  async getCountByReverionAndBranch(branch, fromVersion, toVersion) {
+    const allCommitData = await this.getCommitList(branch);
+    const last = allCommitData[allCommitData.length - 1].version;
+    let from = fromVersion || last.replace("r", "");
+    let fromTime, toTime;
+    for (const commit of allCommitData) {
+      const version = commit.version.replace("r", "");
+      if (version == from) {
+        fromTime = commit.time;
+      }
+      if (version == toVersion) {
+        toTime = commit.time;
+      }
+    }
+    toTime = toTime || allCommitData[0].time;
+    const version = `-r${from}${toVersion ? ":" + toVersion : ""}`
     const commond = `svn diff ${version} ${branch}`;
-    const buf = execSync(commond);
-    return buf.toString().match(/\n\+\s/g).length;
+    console.log(commond);
+    const buf2 = await new Promise((r) => {
+      const child =  exec(commond, { encoding: 'binary', maxBuffer: 200 * 1024 * 20 })
+      let data = "";
+      child.stdout.on('data', function(chunk){
+        data += chunk;
+      });
+      child.on('close', function(e, code) {
+        r(data);
+      });
+    });
+    return {
+      count: buf2.toString().match(/\n\+(?!\+)/g).length,
+      fromTime,
+      toTime
+    };
   }
 }
 
@@ -53,10 +85,13 @@ const sm = new SVNManager();
 // sm.isExist();
 module.exports = sm;
 
-// const data = sm.getCommitList("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1")
-// console.log(data);
+// const data = sm.getCommitList("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1").then((r)=> {
+//   console.log(r);
+// })
 // // console.log(sm.isExist());
 
-// const count = sm.getCountByReverionAndBranch("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1", '5547');
+// const count = sm.getCountByReverionAndBranch("https://192.0.0.140/SaaS-platform/product/SaaS_enterprise/APP_components/saas_enterprise_web/branches/v1.1.1", "5514", "6997").then((r)=> {
+//   console.log(r);
+// })
 
 // console.log(count);

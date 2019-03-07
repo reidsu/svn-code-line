@@ -24,8 +24,8 @@ export class SVNProvider {
     return Promise.reject("The branch cannot be empty when querying the commit list");
   }
   getCountByReverionAndBranch(branch, formVersion, lastVersion) {
-    if (!branch || !formVersion) {
-      return Promise.reject("The branch cannot be empty and form version cannot be empty when querying the code count");
+    if (!branch) {
+      return Promise.reject("The branch cannot be empty when querying the code count");
     }
     ipcRenderer.send("svn_codeCount", branch, formVersion, lastVersion);
     return new Promise((resolve, reject) => {

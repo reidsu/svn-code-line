@@ -17,20 +17,20 @@ class IPCManager {
   handlerSVNIsExist(event, arg) {
     event.returnValue= new Response(svnManager.isExist());
   }
-  handlerGetCommitList(event, arg) {
+  async handlerGetCommitList(event, arg) {
     const res = new Response();
     try {
-      const result = svnManager.getCommitList(arg);
+      const result = await svnManager.getCommitList(arg);
       res.result = result;
     } catch (error) {
       res.error = error.message;
     }
     event.sender.send("svn_commitList", res);
   }
-  handlerGetCodeCount(event, branch, fromVersion, toVersion) {
+  async handlerGetCodeCount(event, branch, fromVersion, toVersion) {
     const res = new Response();
     try {
-      const result = svnManager.getCountByReverionAndBranch(branch, fromVersion, toVersion);
+      const result = await svnManager.getCountByReverionAndBranch(branch, fromVersion, toVersion);
       res.result = result;
     } catch (error) {
       res.error = error.message;

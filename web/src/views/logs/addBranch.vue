@@ -16,8 +16,14 @@
               :value="group.name"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label-width="80px" label="分组路径" prop="branch">
+        <el-form-item label="是否批量">
+          <el-switch v-model="form.delivery"></el-switch>
+        </el-form-item>
+        <el-form-item v-if='!form.delivery' label-width="80px" label="分组路径" prop="branch">
           <el-input v-model="form.branch"></el-input>
+        </el-form-item>
+        <el-form-item v-else label-width="80px" label="批量分组" prop="branchs">
+          <el-input type="textarea" v-model="form.branchs"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -47,9 +53,19 @@ export default {
       if (!value) {
         return cb(new Error("SVN分支路径不能为空"));
       }
+      if (value.search("http") < 0) {
+        return cb(new Error("请检查SVN分支路径"));
+      };
+      cb();
+    }
+    const checkBranchs = function(rules, value, cb) {
+      if (!value) {
+        return cb(new Error("SVN分支路径不能为空"));
+      }
       cb();
     }
     const form = {
+      delivery: false,
       group: this.$route.query.group
     };
     return {
@@ -58,6 +74,7 @@ export default {
       rules: {
         group: [{ validator: checkGroup, required: true, trigger: ["blur"] }],
         branch: [{ validator: checkBranch, required: true, trigger: ["blur"] }],
+        branchs: [{ validator: checkBranchs, required: true, trigger: ["blur"] }],
       }
     }
   },
@@ -76,7 +93,11 @@ export default {
         if (!valid) {
           return;
         } else {
-          that.addBranch(that.form.group, that.form.branch);
+          if (that.form.delivery) {
+            that.batchAddBranch(that.form.group, that.form.branchs)
+          } else {
+            that.addBranch(that.form.group, that.form.branch.replace(/(^\s*)|(\s*$)/g, ""));
+          }
           that.$message({
             type: "success",
             message: "添加成功",
@@ -86,8 +107,29 @@ export default {
         }
       })
     },
+    batchAddBranch(group, branchs) {
+      let bs = branchs.split("\n");
+      bs = bs.map(branch => {
+        return branch.replace(/(^.+(?=http))|(\s*$)/g, "");
+      })
+      const target = this.groups.find(g => g.name === group);
+      bs = bs.filter(b => {
+        if (!b) {
+          return false
+        }
+        if (target.svn.find(s => s===b)) {
+          return false
+        }
+        return true;
+      });
+      target.svn = bs.concat(target.svn);
+      window.localStorage.setItem("groups", JSON.stringify(this.groups));
+    },
     addBranch(group, branchName) {
       const target = this.groups.find(g => g.name === group);
+      if (target.svn.find(s => s === branchName)) {
+        return;
+      }
       target.svn.unshift(branchName);
       window.localStorage.setItem("groups", JSON.stringify(this.groups));
     }

@@ -13,10 +13,10 @@
               <span>{{group.name}}</span>
               <div class="svn-home__form__group--action">
                 <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-                  <i class="el-icon-edit" @click="editGroup(group.name)"></i>
+                  <i class="el-icon-edit" @click="editGroup(group.name, $event)"></i>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                  <i class="el-icon-delete" @click="delGroup(group.name)"></i>
+                  <i class="el-icon-delete" @click="delGroup(group.name, $event)"></i>
                 </el-tooltip>
               </div>
             </template>
@@ -27,10 +27,10 @@
                   <i class="el-icon-zoom-in"></i>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="统计总代码量" placement="top">
-                  <i class="el-icon-sort"></i>
+                  <i @click="openCodeCount(group.name, branch)" class="el-icon-sort"></i>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                  <i class="el-icon-delete"></i>
+                  <i @click="delBranch(group.name, branch)" class="el-icon-delete"></i>
                 </el-tooltip>
               </div>
               </div>
@@ -73,10 +73,12 @@ export default {
     addGroup() {
       this.$router.push("/home/group/add");
     },
-    editGroup(name) {
+    editGroup(name, e) {
+      e.preventDefault();
       this.$router.push("/home/group/edit?name=" + name);
     },
-    delGroup(name) {
+    delGroup(name, e) {
+      e.preventDefault();
       const that = this;
       this.$confirm('此操作将删除该分组及分组里面的svn路径', '提示', {
         confirmButtonText: '确定',
@@ -103,6 +105,26 @@ export default {
     },
     addBranch(e, group) {
       this.$router.push(`/home/branch/add${group ? `?group=${group}` : ""}`);
+    },
+    openCodeCount(group, branch) {
+      this.$router.push(`/home/code/count?group=${group}&branch=${branch}`);
+    },
+    delBranch(group, branch) {
+      let groups = JSON.parse(window.localStorage.getItem("groups"));
+      groups = groups.map( g => {
+        if (g.name === group) {
+          g.svn = g.svn.filter(b => {
+            return b!== branch
+          });
+        } 
+        return g;
+      })
+      window.localStorage.setItem("groups", JSON.stringify(groups));
+      this.$message({
+        type: 'success',
+        message: '删除成功!'
+      });
+      this.getGroups();
     }
   }
 }

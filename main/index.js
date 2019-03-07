@@ -20,7 +20,7 @@ function createWindow() {
   } })
 
   // const web = path.join(__dirname, "../web/dist/index.html") 
-  const web = "http://127.0.0.1:8083"
+  const web = "http://127.0.0.1:8081"
   // 然后加载应用的 index.html。
   win.loadURL(web)
   // win.loadFile(web)

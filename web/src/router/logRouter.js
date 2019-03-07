@@ -20,5 +20,8 @@ export default {
   }, {
     path: "branch/add",
     component: () => import("./../views/logs/addBranch.vue")
+  }, {
+    path: "code/count",
+    component: () => import("./../views/logs/codeCount.vue")
   }]
 }
