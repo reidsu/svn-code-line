@@ -4,6 +4,7 @@
       title="SVN代码行数统计"
       :visible='true'
       width="60%"
+      top="5vh"
       :before-close="handleClose"
       >
       <div class="svn-count-header">
@@ -50,6 +51,22 @@
             {{endTime}}
           </div>
         </div>
+        <div class="svn-count-detail__item">
+          <div class="svn-count-detail__item--key">
+            从:
+          </div>
+          <div class="svn-count-detail__item--value">
+            {{fromVersion}}
+          </div>
+        </div>
+        <div class="svn-count-detail__item">
+          <div class="svn-count-detail__item--key">
+            到:
+          </div>
+          <div class="svn-count-detail__item--value">
+            {{toVersion}}
+          </div>
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose" type="primary" class="svn-btn" >确 定</el-button>
@@ -68,13 +85,21 @@ export default {
       group: this.$route.query.group,
       branch: this.$route.query.branch,
       startTime: "",
-      endTime: ""
+      endTime: "",
+      fromVersion: "",
+      toVersion: ""
     }
   },
   mounted() {
     const that = this;
     setTimeout(() => {
-      that.getCodeCount();
+      // 注释的是真实数据
+      // that.getCodeCount();
+      this.codeCount = 13512;
+      this.startTime = "2018-9-23 23:11";
+      this.endTime = "2018-12-23 23:11";
+      this.fromVersion = "r123";
+      this.toVersion = "r421";
     }, 500);
   },
   methods: {
@@ -85,8 +110,9 @@ export default {
           this.codeCount = res.data.count;
           this.startTime = res.data.fromTime;
           this.endTime = res.data.toTime;
+          this.fromVersion = res.data.fromVersion;
+          this.toVersion = res.data.toVersion;
         }
-        
       } catch (error) {
         this.$message({
           type: "error",

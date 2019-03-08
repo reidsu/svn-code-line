@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import logRouter from './logRouter.js';
+import commitRouter from "./commitRouter";
+
 Vue.use(Router)
 
 export default new Router({
@@ -16,6 +18,6 @@ export default new Router({
       path: '/login',
       component: () => import("./../views/account/login.vue")
     },
-    logRouter
+    logRouter, commitRouter
   ]
 })

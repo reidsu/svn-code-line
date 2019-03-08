@@ -24,7 +24,7 @@
               <span>{{branch}}</span>
               <div class="svn-home__form__group--action">
                 <el-tooltip class="item" effect="dark" content="查看提交记录" placement="top">
-                  <i class="el-icon-zoom-in"></i>
+                  <i @click="openBranch(group.name, branch)" class="el-icon-zoom-in"></i>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="统计总代码量" placement="top">
                   <i @click="openCodeCount(group.name, branch)" class="el-icon-sort"></i>
@@ -108,6 +108,9 @@ export default {
     },
     openCodeCount(group, branch) {
       this.$router.push(`/home/code/count?group=${group}&branch=${branch}`);
+    },
+    openBranch(group, branch) {
+      this.$router.push(`/commit?branch=${branch}&group=${group}`);
     },
     delBranch(group, branch) {
       let groups = JSON.parse(window.localStorage.getItem("groups"));

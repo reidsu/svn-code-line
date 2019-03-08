@@ -27,7 +27,7 @@ class SVNManager {
         return {
           version: info[0].replace(/\n|\s/g, ""),
           author: info[1].replace(/\s/g, ""),
-          time: info[2].substr(0, 20),
+          time: info[2].substr(0, 17),
           message: info[3].replace(/^.+\r\n\r\n|\n|\r/g, "")
         }
       } catch(_) {}
@@ -57,6 +57,7 @@ class SVNManager {
         toTime = commit.time;
       }
     }
+    const toVer = toVersion || allCommitData[0].version;
     toTime = toTime || allCommitData[0].time;
     const version = `-r${from}${toVersion ? ":" + toVersion : ""}`
     const commond = `svn diff ${version} ${branch}`;
@@ -74,7 +75,9 @@ class SVNManager {
     return {
       count: buf2.toString().match(/\n\+(?!\+)/g).length,
       fromTime,
-      toTime
+      toTime,
+      fromVersion: "r" + from,
+      toVersion: toVer
     };
   }
 }
