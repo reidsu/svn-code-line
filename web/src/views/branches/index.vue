@@ -1,7 +1,7 @@
 <template>
   <div class="svn-branches">
     <!-- 分组展示 -->
-    <div class="svn-branches__group">
+    <!-- <div class="svn-branches__group">
       <h3 class="svn-branches__group__title">SVN分组</h3>
       <ul v-if="groups!==undefined&&groups.length>0" class="svn-branches__group__list">
         <li v-for="(item,index) in groups" :key="index" class="svn-branches__group--wrap">
@@ -16,11 +16,18 @@
       <div v-else class="svn-empty">
         <p class="svn-empty__info">暂未添加分组</p>
       </div>
-    </div>
+    </div> -->
     <!-- 分支展示 -->
     <div class="svn-content svn-branches__main">
       <!-- 添加分支 -->
+     
       <div class="svn-content__add--wrap">
+        <div class="svn-content__return">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/home/manage' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>分组</el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
         <a @click="addBranches" class="svn-add--text" href="javascript:void(0);">
           <span>添加分支</span>
           <i class="el-icon-plus"></i>
