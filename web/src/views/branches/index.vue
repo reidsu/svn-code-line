@@ -110,14 +110,7 @@ export default {
     },
     // 初始化
     init() {
-      this.groups.forEach((item, index) => {
-        if (index === 0) {
-          item.active = true;
-        } else {
-          item.active = false;
-        }
-      });
-      this.currentGroup = this.groups[0];
+      this.currentGroup = this.groups.find(g => g.name === this.$route.query.group);
     },
     // 点击单个组
     handleGroup(data, currentIndex) {
@@ -142,13 +135,12 @@ export default {
     },
     // 查看提交记录
     checkBranches(group, branch) {
-      console.log("checkBranches");
       this.$router.push({
         name: "commit",
-        params: {
-          group: group,
-          branch: branch
-        }
+        query: {
+          branch,
+          group
+        },
       });
     },
     // 统计总代码量
@@ -158,6 +150,10 @@ export default {
         params: {
           group: group,
           branch: branch
+        },
+        query: {
+          branch,
+          group
         },
         append: true
       });

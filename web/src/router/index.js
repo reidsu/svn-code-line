@@ -46,6 +46,13 @@ export default new Router({
           path: "commit",
           name: "commit",
           component: () => import("./../views/commit/index.vue"),
+          children: [
+            {
+              path: 'commitCodeCount',
+              name: 'commitCodeCount',
+              component: () => import("./../views/branches/codeCount.vue"),
+            }
+          ]
         }
       ]
     },

@@ -29,7 +29,6 @@ export default {
     };
   },
   mounted() {
-    console.log("aaa");
     svnProvider.isExist().then(res => {
       if ((Number(res.code) === 200)) {
         this.$router.push("/home/manage");

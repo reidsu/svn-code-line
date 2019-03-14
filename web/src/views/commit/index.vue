@@ -4,7 +4,8 @@
     <div class="svn-content__add--wrap">
       <div class="svn-commit__header">
         <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/home/branches' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/home/manage' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: `/home/branches?group=${this.$route.query.group}` }">{{this.$route.query.group}}</el-breadcrumb-item>
           <el-breadcrumb-item>提交记录</el-breadcrumb-item>
         </el-breadcrumb>
         <div>
@@ -16,24 +17,41 @@
     <div class="svn-content__inner svn-commit__table--wrap">
       <!-- 分支列表 -->
       <div class="svn-commit__table">
-        <el-table
-          ref="commitTable"
-          :data="mockCommits"
-          style="width: 100%"
-          @select="handleSelectionChange"
-        >
-          <el-table-column type="selection" min-width="80" class-name="svn-commit__table__select"></el-table-column>
-          <el-table-column prop="version" align="center" label="版本" min-width="60"></el-table-column>
-          <el-table-column prop="author" align="center" label="开发者" min-width="120"></el-table-column>
-          <el-table-column prop="time" align="center" label="日期" min-width="140"></el-table-column>
-          <el-table-column
-            prop="message"
-            label="内容"
-            min-width="340"
-            label-class-name="svn-commit__table__content"
-            show-overflow-tooltip
-          ></el-table-column>
-        </el-table>
+        <div class="svn-commit-table">
+          <el-table
+            ref="commitTable"
+            :data="commits"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="change"
+            @select="handleSelectionChange"
+            >
+            <el-table-column
+              type="selection"
+              width="40">
+            </el-table-column>
+            <el-table-column
+              prop="version"
+              label="版本"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="author"
+              label="开发者"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              label="日期"
+              prop="time"
+              width="135">
+            </el-table-column>
+            <el-table-column
+              prop="message"
+              label="内容"
+              show-overflow-tooltip>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </div>
     <div class="svn-commit__bottom">
@@ -47,131 +65,77 @@
 </template>
 
 <script>
+import svnProvider from "../../api/SVNProvider.js";
+
 export default {
   data() {
     return {
-      branch: this.$route.params.branch,
-      mockCommits: [
-        {
-          version: "1",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "2",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "3",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "4",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "5",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "6",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "7",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "8",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "7",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "8",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "7",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        },
-        {
-          version: "8",
-          author: "zhangxinfeng3",
-          time: " 2018-12-26 10:29",
-          message: "【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）"
-        }
-      ]
-    };
+      selection: [],
+      branch: this.$route.query.branch,
+      commits: []
+    }
+  },
+  mounted() {
+    svnProvider.getCommitList(this.$route.query.branch)
+    .then(res => {
+      this.commits = res.data;
+    })
   },
   methods: {
     closeSelect() {
       this.$refs.commitTable.clearSelection();
     },
     compute() {
-      this.$router.push(
-        `/commit/code/count?group=${this.$route.query.group}&branch=${
-          this.$route.query.branch
-        }`
-      );
+      const commits = this.selection.sort((r1, r2) => {
+        return r1.version > r2.version;
+      });
+      const from = commits[0].version;
+      const to = commits[commits.length - 1].version;
+      this.$router.push({
+        name: "commitCodeCount",
+        query: {
+          group: this.$route.query.group,
+          branch: this.$route.query.branch,
+          from: from,
+          to: to,
+        },
+        append: true
+      });
+    },
+    change(selection) {
+      this.selection = selection;
     },
     handleSelectionChange(selection, row) {
       selection = selection.sort((r1, r2) => {
         return r1.version > r2.version;
-      });
+      })
       if (selection.length > 1) {
-        const index = this.mockCommits.findIndex(
-          c => c.version === row.version
-        );
+        // const index = this.commits.findIndex(c => c.version === row.version);
+
         const fromVersion = selection[0].version;
         const toVersion = selection[selection.length - 1].version;
-        let fromIndex = this.mockCommits.findIndex(
-          c => c.version === fromVersion
-        );
-        let toIndex = this.mockCommits.findIndex(c => c.version === toVersion);
-        if (index < fromIndex) {
-          fromIndex = index;
-        } else if (index > toIndex) {
-          toIndex = index;
-        }
-        const targetRows = this.mockCommits.filter((c, index) => {
+
+        let fromIndex = this.commits.findIndex(c => c.version === fromVersion);
+        let toIndex = this.commits.findIndex(c => c.version === toVersion);
+        if (fromIndex > toIndex) {
+          let i = fromIndex;
+          fromIndex = toIndex
+          toIndex = i;
+        } 
+        const targetRows = this.commits.filter((c, index) => {
           if (index <= toIndex && index >= fromIndex) {
             return true;
           }
-          return false;
+          return false
         });
         this.$refs.commitTable.clearSelection();
-        targetRows.forEach((r, i) => {
-          console.log(i);
+        targetRows.forEach((r) => {
           this.$refs.commitTable.toggleRowSelection(r, true);
         });
       } else {
         this.$refs.commitTable.toggleRowSelection(row, true);
       }
-    }
+    },
   }
 };
 </script>
