@@ -13,12 +13,13 @@ let win
 function createWindow() {
 
   // 创建浏览器窗口。
-  win = new BrowserWindow({ width: 800, height: 600,  
-    opacity: 0.98,
-    webPreferences: { 
-      webSecurity: process.env.NODE_ENV !== 'development' 
-  } })
-
+  win = new BrowserWindow({
+    width: 1600,
+    height: 600,
+    webPreferences: {
+      webSecurity: process.env.NODE_ENV !== 'development'
+    }
+  })
   // const web = path.join(__dirname, "../web/dist/index.html") 
   const web = "http://127.0.0.1:8080"
   // 然后加载应用的 index.html。
