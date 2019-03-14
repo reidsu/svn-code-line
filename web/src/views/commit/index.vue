@@ -17,9 +17,10 @@
       <div class="svn-commit-table">
         <el-table
           ref="commitTable"
-          :data="mockCommits"
+          :data="commits"
           tooltip-effect="dark"
           style="width: 100%"
+          @selection-change="change"
           @select="handleSelectionChange"
           >
           <el-table-column
@@ -55,47 +56,25 @@
 
 <script>
 import SvnHeader from "./../../components/Header";
+import svnProvider from "../../api/SVNProvider.js";
+
+
 export default {
   components: {
     SvnHeader
   },
   data() {
     return {
+      selection: [],
       branch: this.$route.query.branch,
-      mockCommits: [{ version: '1',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' },
-        { version: '2',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' }, 
-        { version: '3',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' }, 
-        { version: '4',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' }, 
-        { version: '5',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' },
-        { version: '6',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' }, 
-        { version: '7',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' }, 
-        { version: '8',
-        author: 'zhangxinfeng3',
-        time: ' 2018-12-26 10:29',
-        message: '【配管】开发分支v1.1.1创建（申请者：张翔8 JIRA：SSWEB-126）' }, 
-      ]
+      commits: []
     }
+  },
+  mounted() {
+    svnProvider.getCommitList(this.$route.query.branch)
+    .then(res => {
+      this.commits = res.data;
+    })
   },
   methods: {
     returnHome() {
@@ -105,33 +84,43 @@ export default {
       this.$refs.commitTable.clearSelection();
     },
     compute() {
+      const commits = this.selection.sort((r1, r2) => {
+        return r1.version > r2.version;
+      });
+      const from = commits[0].version;
+      const to = commits[commits.length - 1].version;
       this.$router.push(
-        `/commit/code/count?group=${this.$route.query.group}&branch=${this.$route.query.branch}`
+        `/commit/code/count?group=${this.$route.query.group}&branch=${this.$route.query.branch}&from=${from}&to=${to}`
       );
+    },
+    change(selection) {
+      this.selection = selection;
     },
     handleSelectionChange(selection, row) {
       selection = selection.sort((r1, r2) => {
         return r1.version > r2.version;
       })
       if (selection.length > 1) {
-        const index = this.mockCommits.findIndex(c => c.version === row.version);
+        // const index = this.commits.findIndex(c => c.version === row.version);
+
         const fromVersion = selection[0].version;
         const toVersion = selection[selection.length - 1].version;
-        let fromIndex = this.mockCommits.findIndex(c => c.version === fromVersion);
-        let toIndex = this.mockCommits.findIndex(c => c.version === toVersion);
-        if (index < fromIndex) {
-          fromIndex = index;
-        } else if (index > toIndex) {
-          toIndex = index;
-        }
-        const targetRows = this.mockCommits.filter((c, index) => {
+
+        let fromIndex = this.commits.findIndex(c => c.version === fromVersion);
+        let toIndex = this.commits.findIndex(c => c.version === toVersion);
+        if (fromIndex > toIndex) {
+          let i = fromIndex;
+          fromIndex = toIndex
+          toIndex = i;
+        } 
+        const targetRows = this.commits.filter((c, index) => {
           if (index <= toIndex && index >= fromIndex) {
             return true;
           }
           return false
         });
         this.$refs.commitTable.clearSelection();
-        targetRows.forEach((r, i) => {
+        targetRows.forEach((r) => {
           this.$refs.commitTable.toggleRowSelection(r, true);
         });
       } else {
