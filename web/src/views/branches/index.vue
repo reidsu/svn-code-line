@@ -53,14 +53,14 @@
                   class="svn-branches__btn"
                   href="javascript:void(0);"
                 >
-                  <i class="el-icon-document"></i>
+                  <i class="iconfont svn-icon-view2"></i>
                 </a>
                 <a
                   @click="countBranches(currentGroup.name, item)"
                   class="svn-branches__btn"
                   href="javascript:void(0);"
                 >
-                  <i class="el-icon-edit"></i>
+                  <i class="iconfont svn-icon-statistics"></i>
                 </a>
                 <a
                   @click="delBranches(currentGroup.name, item)"
