@@ -11,7 +11,12 @@
     <div class="svn-content__inner svn-group__list">
       <!-- 分支列表 -->
       <ul v-if="groups.length>0" class="svn-group__list--inner">
-        <li v-for="(item,index) in groups" :key="index" class="svn-group__item--wrap">
+        <li 
+          v-for="(item,index) in groups" 
+          :key="index" 
+          class="svn-group__item--wrap"
+          @click="openGroup(item.name, $event)"
+        >
           <div class="svn-group__item">
             <p class="svn-group__name">{{item.name}}</p>
             <div class="svn-group__operate">
@@ -35,7 +40,7 @@
       </ul>
       <!-- 没有分支 -->
       <div v-else class="svn-empty">
-        <p class="svn-empty__info">暂未添加分支</p>
+        <p class="svn-empty__info">暂未添加分组</p>
       </div>
     </div>
     <router-view></router-view>
@@ -64,6 +69,10 @@ export default {
         return;
       }
       this.groups = JSON.parse(groups);
+    },
+    openGroup(name, e) {
+      e.preventDefault();
+      this.$router.push("branches?group=" + name);
     },
     // 添加分组
     addGroup() {

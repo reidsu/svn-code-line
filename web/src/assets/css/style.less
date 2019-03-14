@@ -151,7 +151,15 @@
 
 .svn-exit {
   font-size: 16px;
+  p {
+    color: #555;
+  }
+  p.svn-exit-check {
+    padding-bottom: 50px;
+    font-size: 18px;
+  }
 
+  
   &__result {
     text-align: center;
     font-size: 16px;
@@ -219,7 +227,7 @@
 }
 
 .svn-main {
-  padding-left: 36px;
+
 
   &__wrap {
     // background: red;
@@ -365,6 +373,7 @@
 
 .svn-group {
   &__list {
+    background: #efefef;
     &--inner {
       display: flex;
       flex-wrap: wrap;
@@ -373,6 +382,9 @@
   }
 
   &__item {
+    cursor: pointer;
+    border-radius: 5px;
+    background: #fff;
     display: flex;
     flex-direction: column;
     height: 100%;

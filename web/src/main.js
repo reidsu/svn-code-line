@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router/index2";
+import router from "./router/index";
 import Element from "element-ui";
 import VueBus from 'vue-bus';
 import 'element-ui/lib/theme-chalk/index.css';

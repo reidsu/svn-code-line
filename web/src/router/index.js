@@ -12,11 +12,6 @@ export default new Router({
       redirect: '/svnExit'
     },
     {
-      // 登录
-      path: '/login',
-      component: () => import("./../views/account/login.vue")
-    },
-    {
       path: '/svnExit',
       component: () => import("./../views/account/svnExit.vue")
     },
