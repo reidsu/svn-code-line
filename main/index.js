@@ -14,7 +14,7 @@ function createWindow() {
 
   // 创建浏览器窗口。
   win = new BrowserWindow({
-    width: 1600,
+    width: 800,
     height: 600,
     webPreferences: {
       webSecurity: process.env.NODE_ENV !== 'development'

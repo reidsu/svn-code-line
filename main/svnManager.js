@@ -25,7 +25,7 @@ class SVNManager {
       const info = str.split("|");
       try {
         return {
-          version: info[0].replace(/\n|\s/g, ""),
+          version: info[0].replace(/\n|\s|r/g, ""),
           author: info[1].replace(/\s/g, ""),
           time: info[2].substr(0, 17),
           message: info[3].replace(/^.+\r\n\r\n|\n|\r/g, "")
@@ -61,7 +61,6 @@ class SVNManager {
     toTime = toTime || allCommitData[0].time;
     const version = `-r${from}${toVersion ? ":" + toVersion : ""}`
     const commond = `svn diff ${version} ${branch}`;
-    console.log(commond);
     const buf2 = await new Promise((r) => {
       const child =  exec(commond, { encoding: 'binary', maxBuffer: 200 * 1024 * 20 })
       let data = "";
@@ -76,7 +75,7 @@ class SVNManager {
       count: buf2.toString().match(/\n\+(?!\+)/g).length,
       fromTime,
       toTime,
-      fromVersion: "r" + from,
+      fromVersion: from,
       toVersion: toVer
     };
   }

@@ -94,18 +94,22 @@ export default {
     const that = this;
     setTimeout(() => {
       // 注释的是真实数据
-      // that.getCodeCount();
-      this.codeCount = 13512;
-      this.startTime = "2018-9-23 23:11";
-      this.endTime = "2018-12-23 23:11";
-      this.fromVersion = "r123";
-      this.toVersion = "r421";
+      that.getCodeCount();
+      // this.codeCount = 13512;
+      // this.startTime = "2018-9-23 23:11";
+      // this.endTime = "2018-12-23 23:11";
+      // this.fromVersion = "r123";
+      // this.toVersion = "r421";
     }, 500);
   },
   methods: {
     async getCodeCount() {
       try {
-        const res = await svnProvider.getCountByReverionAndBranch(this.$route.query.branch);
+        const res = await svnProvider.getCountByReverionAndBranch(
+          this.$route.query.branch,
+          this.$route.query.from,
+          this.$route.query.to,
+        );
         if (res.code === 200) {
           this.codeCount = res.data.count;
           this.startTime = res.data.fromTime;
