@@ -4,21 +4,22 @@
       <h1 class="svn-login__title--inner">SVN代码行数GUI展示工具</h1>
     </div>
     <div class="svn-login__form">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入SVN账号"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="请输入密码"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="svn-btn" @click="login">登录</el-button>
-        </el-form-item>
-      </el-form>
+      <!-- 登录 -->
+      <div class="svn-login__form--inner">
+        <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+          <el-form-item label="用户名" prop="username">
+            <el-input v-model="form.username" placeholder="请输入SVN账号"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="form.password" type="password" placeholder="请输入密码"></el-input>
+          </el-form-item>
+          <el-form-item class="svn-btn--wrap">
+            <el-button class="svn-btn" @click="login">登录</el-button>
+            <el-button type="text" @click="handleJump">跳过</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
-    <el-button @click="testApi1">接口测试：isExist</el-button>
-    <el-button @click="testApi2">接口测试：getCommitList</el-button>
-    <el-button @click="testApi3">接口测试：getCountByReverionAndBranch</el-button>
   </div>
 </template>
 
@@ -43,16 +44,6 @@ export default {
         callback(new Error("请输入密码"));
       } else if (/\s/.test(value)) {
         callback(new Error("密码不能包含空格"));
-        // } else if (value.length < 8 || value.length > 16) {
-        //   callback(new Error("密码长度要求8-16位"));
-        // } else if (
-        //   !/^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)(?![\W_]+$)(?!^.*[\u4e00-\u9fa5].*$)\S{8,16}$/.test(
-        //     value
-        //   )
-        // ) {
-        //   callback(
-        //     new Error("密码只能用数字、小写字母、大写字母、符号的两种及以上组合")
-        //   );
       } else {
         callback();
       }
@@ -66,12 +57,14 @@ export default {
         username: [
           {
             validator: username,
+            required: true,
             trigger: ["blur", "change"]
           }
         ],
         password: [
           {
             validator: password,
+            required: true,
             trigger: ["blur", "change"]
           }
         ]
@@ -81,21 +74,19 @@ export default {
   methods: {
     // 登录
     login() {
-      this.$router.push("/home");
+      // this.$router.push("/home");
       this.$refs.form.validate(valid => {
         if (valid) {
-          console.log("登录逻辑");
-          this.$router.push("/log");
+          localStorage.setItem("svnName", this.form.username);
+          this.$router.push("/home/branches");
         } else {
           return false;
         }
       });
     },
-    testApi1() {
-      console.log("接口测试：isExist");
-      // svnProvider.isExist()
-      // .then(res=> console.log(res))
-      // .catch(err=> console.log(err))
+    // 跳过
+    handleJump() {
+      this.$router.push("/home/branches");
     },
     async testApi2() {
       console.log("接口测试：getCommitList");

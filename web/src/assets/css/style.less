@@ -1,7 +1,60 @@
 @import "./theme.less";
 
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 3px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.1);
+}
 
 //dialog
+.svn-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .el-dialog {
+    margin-top: 0 !important;
+  }
+
+  .el-dialog__header {
+    padding: 30px 40px 10px;
+  }
+
+  .el-dialog__body {
+    padding: 30px 40px 20px;
+  }
+
+  .el-dialog__footer {
+    padding-bottom: 40px;
+  }
+
+  .el-form-item__label {
+    font-size: 16px;
+  }
+
+  .el-input {
+    font-size: 16px;
+  }
+
+  .el-button {
+    padding: 12px 40px;
+
+    &+.el-button {
+      margin-left: 60px;
+    }
+  }
+}
 
 .el-dialog__footer {
   text-align: center;
@@ -9,6 +62,14 @@
 
 // button
 .svn-btn {
+  &--wrap {
+    text-align: center;
+
+    .el-button--text {
+      margin: 10px 0 0;
+    }
+  }
+
   background: @btnBg;
   color: #fff;
   padding: 12px 40px;
@@ -26,6 +87,14 @@
     &:hover {
       background: #eee;
     }
+  }
+}
+
+.svn-add--text {
+  color: @themeColor;
+
+  &:hover {
+    color: @btnTextHover;
   }
 }
 
@@ -62,6 +131,10 @@
     justify-content: center;
     flex: 1;
 
+    &--inner {
+      width: 100%;
+    }
+
     .el-form {
       width: 50%;
       margin: 0 auto;
@@ -76,6 +149,328 @@
   }
 }
 
+.svn-exit {
+  font-size: 16px;
+
+  &__result {
+    text-align: center;
+    font-size: 16px;
+    line-height: 28px;
+  }
+}
+
+// home
+.svn-aside {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 36px;
+  background: @themeColor;
+  z-index: 20;
+
+  &__list {
+    padding: 10px 0;
+  }
+
+  &__item {}
+
+  &__btn {
+    @btnH: 50px;
+    display: block;
+    height: @btnH;
+    font-size: 20px;
+    line-height: @btnH;
+    text-align: center;
+  }
+
+  &__user {
+    position: relative;
+    color: #fff;
+  }
+
+  &__nickname {
+    position: absolute;
+    top: 2px;
+    left: 40px;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.9);
+    line-height: 30px;
+    padding: 0 15px;
+    border-radius: 4px;
+
+    &::before {
+      position: absolute;
+      top: 9px;
+      left: -13px;
+      content: "";
+      border: 6px solid rgba(0, 0, 0, 0);
+      border-right: 7px solid rgba(0, 0, 0, 0.9);
+    }
+  }
+
+  &__group {
+    color: #fff;
+
+    &.active {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+.svn-main {
+  padding-left: 36px;
+
+  &__wrap {
+    // background: red;
+  }
+}
+
+// 列表通用
+.svn-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+
+  &__inner {
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+  }
+}
+
+.svn-content__add {
+  &--wrap {
+    @titH: 50px;
+    height: @titH;
+    font-size: 14px;
+    line-height: @titH;
+    text-align: right;
+    border-bottom: 1px solid @titleBorderColor;
+    padding: 0 30px;
+  }
+}
+
+// 分支列表
+.svn-branches {
+  display: flex;
+  height: 100vh;
+
+  &__group {
+    @groupW: 200px;
+    display: flex;
+    flex-direction: column;
+    width: @groupW;
+    border-right: 1px solid @titleBorderColor;
+
+    &__title {
+      @titH: 50px;
+      position: relative;
+      height: @titH;
+      font-size: 16px;
+      color: @themeColor;
+      line-height: @titH;
+      text-align: center;
+      border-bottom: 1px solid @titleBorderColor;
+      z-index: 10;
+    }
+
+    &--wrap {
+      border-bottom: 1px solid @borderColor;
+    }
+
+    &__item {
+      display: block;
+      font-size: 14px;
+      color: #444;
+      line-height: 20px;
+      padding: 14px 8px;
+
+      &.active {
+        color: @themeColor;
+        background: #f5f5f5;
+      }
+    }
+  }
+
+  &__main {
+
+    flex: 1;
+    width: 100%;
+  }
+
+  &__add {}
+
+  &__list {
+    padding: 10px 20px 0;
+
+    &--inner {}
+  }
+
+  &__item {
+    padding: 20px 0 10px;
+
+    &--wrap {
+      border-bottom: 1px solid @borderColor;
+      // &+& {
+      //   border-top: 1px solid @borderColor;
+      // }
+    }
+  }
+
+  &__link {
+    font-size: 14px;
+    color: #555;
+    line-height: 22px;
+    word-break: break-all;
+  }
+
+  &__operate {
+    text-align: right;
+  }
+
+  &__btn {
+    @size: 40px;
+    display: inline-block;
+    vertical-align: top;
+    width: @size;
+    height: @size;
+    font-size: 16px;
+    color: @themeColor;
+    line-height: @size;
+    text-align: center;
+
+    &:hover {
+      color: @btnTextHover;
+    }
+  }
+}
+
+// 数据为空
+.svn-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  &__info {
+    color: #ddd;
+    max-width: 60%;
+  }
+}
+
+// 分组列表
+.svn-group__main {}
+
+.svn-group {
+  &__list {
+    &--inner {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 0 2px 8px 0 rgba(9, 54, 84, 0.2);
+    padding: 0 10px;
+
+    &--wrap {
+      flex: 0 1 25%;
+      padding: 10px;
+    }
+  }
+
+  &__name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    height: 100%;
+    font-size: 16px;
+    color: #444;
+    text-align: center;
+    line-height: 24px;
+    padding: 30px 10px 20px;
+  }
+
+  &__operate {
+    border-top: 1px solid @borderColor;
+  }
+
+  &__btn {
+    display: inline-block;
+    width: 50%;
+    font-size: 16px;
+    color: @themeColor;
+    vertical-align: top;
+    text-align: center;
+    padding: 10px 0;
+
+    &:hover {
+      color: @btnTextHover;
+    }
+  }
+}
+
+// 提交记录
+.svn-commit {
+
+  // header
+  &__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .el-breadcrumb {
+      flex: 1;
+      width: 100%;
+    }
+  }
+
+  // table
+  &__table {
+    &__wrap {}
+
+    & &__select {
+      padding-left: 12px;
+    }
+
+    & &__content {
+      padding: 0 60px;
+    }
+  }
+
+  // bottom
+  &__bottom {
+    position: relative;
+    z-index: 100;
+    box-shadow: 0 -2px 6px -3px rgba(243, 188, 5, 0.3);
+
+    &__tips {
+      font-size: 14px;
+      color: #fff;
+      line-height: 24px;
+      background: rgba(243, 188, 5, 1);
+      padding: 0 30px;
+    }
+
+    &__btn {
+      text-align: right;
+      padding: 15px 30px;
+
+      .el-button {
+        padding: 10px 30px;
+      }
+    }
+  }
+}
+
+// 以前
 // header
 .svn-header {
   display: flex;
@@ -154,13 +549,16 @@
   padding: 10px;
   overflow: auto;
   max-height: 340px;
+
   &__group--action {
     display: inline-block;
     margin-left: 10px;
     font-size: 16px;
+
     i {
       margin-right: 10px;
     }
+
     i:hover {
       color: blue;
     }
@@ -179,6 +577,7 @@
   text-align: center;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
+
   .svn-count-nums {
     font-size: 30px;
     font-weight: bold;
@@ -186,15 +585,19 @@
     padding-bottom: 10px;
   }
 }
+
 .svn-count-detail {
   padding: 10px 10px;
+
   &__item {
     padding: 5px 0px;
+
     &--key {
       display: inline-block;
       width: 90px;
       text-align: right;
     }
+
     &--value {
       display: inline-block;
       max-width: 300px;
@@ -208,6 +611,6 @@
 
 // commit
 .svn-commit-table {
-  max-height: 400px;
-  overflow: auto;
+  // max-height: 400px;
+  // overflow: auto;
 }
