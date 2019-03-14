@@ -8,7 +8,7 @@
             @mouseleave="handleUserLeave"
             class="svn-aside__btn svn-aside__user"
           >
-            <i class="el-icon-service"></i>
+            <i class="iconfont svn-icon-person"></i>
             <p v-show="isNickname" class="svn-aside__nickname">{{username}}</p>
           </span>
         </li>
@@ -19,7 +19,7 @@
             :class="isGroup?'active':''"
             href="javascript:void(0)"
           >
-            <i class="el-icon-setting"></i>
+            <i class="iconfont svn-icon-card"></i>
           </a>
         </li>
       </ul>
