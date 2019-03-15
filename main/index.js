@@ -16,6 +16,12 @@ function createWindow() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    resizable: false,
+    fullscreen: false,
+    fullscreenable: false,
+    title: "svn代码行统计",
+    opacity: 0.98,
+    autoHideMenuBar: true,
     webPreferences: {
       webSecurity: process.env.NODE_ENV !== 'development'
     }
