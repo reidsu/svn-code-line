@@ -37,7 +37,7 @@
         </div>
         <div class="svn-count-detail__item">
           <div class="svn-count-detail__item--key">
-            起始时间:
+            开始时间:
           </div>
           <div class="svn-count-detail__item--value">
             {{startTime}}
@@ -53,7 +53,7 @@
         </div>
         <div class="svn-count-detail__item">
           <div class="svn-count-detail__item--key">
-            从:
+            从版本:
           </div>
           <div class="svn-count-detail__item--value">
             {{fromVersion}}
@@ -61,7 +61,7 @@
         </div>
         <div class="svn-count-detail__item">
           <div class="svn-count-detail__item--key">
-            到:
+            到版本:
           </div>
           <div class="svn-count-detail__item--value">
             {{toVersion}}
@@ -93,14 +93,8 @@ export default {
   mounted() {
     const that = this;
     setTimeout(() => {
-      // 注释的是真实数据
       that.getCodeCount();
-      // this.codeCount = 13512;
-      // this.startTime = "2018-9-23 23:11";
-      // this.endTime = "2018-12-23 23:11";
-      // this.fromVersion = "r123";
-      // this.toVersion = "r421";
-    }, 500);
+    }, 100);
   },
   methods: {
     async getCodeCount() {

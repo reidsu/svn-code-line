@@ -1,31 +1,11 @@
 <template>
   <div class="svn-branches">
-    <!-- 分组展示 -->
-    <!-- <div class="svn-branches__group">
-      <h3 class="svn-branches__group__title">SVN分组</h3>
-      <ul v-if="groups!==undefined&&groups.length>0" class="svn-branches__group__list">
-        <li v-for="(item,index) in groups" :key="index" class="svn-branches__group--wrap">
-          <a
-            @click="handleGroup(item,index)"
-            :class="item.active?'active':''"
-            class="svn-branches__group__item"
-            href="javascript:void(0);"
-          >{{item.name}}</a>
-        </li>
-      </ul>
-      <div v-else class="svn-empty">
-        <p class="svn-empty__info">暂未添加分组</p>
-      </div>
-    </div> -->
-    <!-- 分支展示 -->
     <div class="svn-content svn-branches__main">
-      <!-- 添加分支 -->
-     
       <div class="svn-content__add--wrap">
         <div class="svn-content__return">
           <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home/manage' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>分组</el-breadcrumb-item>
+            <el-breadcrumb-item>{{groupName}}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
         <a @click="addBranches" class="svn-add--text" href="javascript:void(0);">
@@ -48,27 +28,33 @@
             <div class="svn-branches__item">
               <p class="svn-branches__link">{{item}}</p>
               <div class="svn-branches__operate">
-                <a
-                  @click="checkBranches(currentGroup.name, item)"
-                  class="svn-branches__btn"
-                  href="javascript:void(0);"
-                >
-                  <i class="iconfont svn-icon-view2"></i>
-                </a>
-                <a
-                  @click="countBranches(currentGroup.name, item)"
-                  class="svn-branches__btn"
-                  href="javascript:void(0);"
-                >
-                  <i class="iconfont svn-icon-statistics"></i>
-                </a>
-                <a
-                  @click="delBranches(currentGroup.name, item)"
-                  class="svn-branches__btn"
-                  href="javascript:void(0);"
-                >
-                  <i class="el-icon-delete"></i>
-                </a>
+                <el-tooltip class="item" effect="dark" content="查看提交记录" placement="top-start">
+                  <a
+                    @click="checkBranches(currentGroup.name, item)"
+                    class="svn-branches__btn"
+                    href="javascript:void(0);"
+                  >
+                    <i class="iconfont svn-icon-view2"></i>
+                  </a>
+                </el-tooltip>
+                <el-tooltip class="item" effect="dark" content="代码总行数统计" placement="top-start">
+                  <a
+                    @click="countBranches(currentGroup.name, item)"
+                    class="svn-branches__btn"
+                    href="javascript:void(0);"
+                  >
+                    <i class="iconfont svn-icon-statistics"></i>
+                  </a>
+                </el-tooltip>
+                <el-tooltip class="item" effect="dark" content="删除分支" placement="top-start">
+                  <a
+                    @click="delBranches(currentGroup.name, item)"
+                    class="svn-branches__btn"
+                    href="javascript:void(0);"
+                  >
+                    <i class="el-icon-delete"></i>
+                  </a>
+                </el-tooltip>
               </div>
             </div>
           </li>
@@ -88,16 +74,17 @@ export default {
   data() {
     return {
       groups: [],
-      currentGroup: {}
+      currentGroup: {},
+      groupName: ""
     };
   },
   mounted() {
-    this.getGroups();
     this.init();
-    this.$bus.on("init-group", this.getGroups);
+    this.$bus.on("init-group", this.init);
+    this.groupName = this.$route.query.group;
   },
   destroyed() {
-    this.$bus.off("init-group", this.getGroups);
+    this.$bus.off("init-group", this.init);
   },
   methods: {
     // 获取分组列表
@@ -110,6 +97,7 @@ export default {
     },
     // 初始化
     init() {
+      this.getGroups();
       this.currentGroup = this.groups.find(g => g.name === this.$route.query.group);
     },
     // 点击单个组
@@ -124,11 +112,11 @@ export default {
       });
     },
     // 添加分支
-    addBranches(e, group) {
+    addBranches(e) {
       this.$router.push({
         name: "addBranches",
-        params: {
-          group: group ? group : ""
+        query: {
+          group: this.$route.query.group
         },
         append: true
       });
@@ -170,11 +158,11 @@ export default {
         return g;
       });
       window.localStorage.setItem("groups", JSON.stringify(groups));
+      this.init();
       this.$message({
-        type: "success",
+        type: "success",duration: 1000,
         message: "删除成功!"
       });
-      this.getGroups();
     }
   }
 };

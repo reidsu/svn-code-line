@@ -67,7 +67,7 @@ export default {
               that.editGroup(that.form.name);
             }
             that.$message({
-              type: "success",
+              type: "success",duration: 1000,
               message: "操作成功",
             })
             that.$bus.$emit("init-group");

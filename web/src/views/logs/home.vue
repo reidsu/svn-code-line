@@ -75,10 +75,13 @@ export default {
     },
     editGroup(name, e) {
       e.preventDefault();
+      e.stopPropagation()
       this.$router.push("/home/group/edit?name=" + name);
     },
     delGroup(name, e) {
+      debugger
       e.preventDefault();
+      e.stopPropagation()
       const that = this;
       this.$confirm('此操作将删除该分组及分组里面的svn路径', '提示', {
         confirmButtonText: '确定',

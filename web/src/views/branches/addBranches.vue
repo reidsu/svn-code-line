@@ -14,15 +14,8 @@
       label-width="100px"
       :rules="rules"
     >
-      <el-form-item label="分组" prop="group">
-        <el-select v-model="form.group" placeholder="请选择分组">
-          <el-option
-            v-for="(group, index) in groups"
-            :key="index"
-            :label="group.name"
-            :value="group.name"
-          ></el-option>
-        </el-select>
+      <el-form-item label="分组名称" >
+        <el-input disabled  v-model='group'></el-input>
       </el-form-item>
       <el-form-item label="是否批量">
         <el-switch v-model="form.delivery"></el-switch>
@@ -43,12 +36,6 @@
 <script>
 export default {
   data() {
-    const checkGroup = function(rules, value, cb) {
-      if (!value) {
-        return cb(new Error("请选择一个分组"));
-      }
-      cb();
-    };
     const checkBranch = function(rules, value, cb) {
       if (!value) {
         return cb(new Error("SVN分支路径不能为空"));
@@ -72,10 +59,10 @@ export default {
       // 页面配置
       dialogVisible: true,
       // 数据
+      group: "",
       groups: [],
       form,
       rules: {
-        group: [{ validator: checkGroup, required: true, trigger: ["blur"] }],
         branch: [{ validator: checkBranch, required: true, trigger: ["blur"] }],
         branchs: [
           { validator: checkBranchs, required: true, trigger: ["blur"] }
@@ -84,8 +71,13 @@ export default {
     };
   },
   mounted() {
-    const groups = window.localStorage.getItem("groups");
-    this.groups = groups ? JSON.parse(groups) : [];
+      const groups = window.localStorage.getItem("groups");
+      if (!groups) {
+        this.groups = [];
+      } else {
+        this.groups = JSON.parse(groups);
+      }
+      this.group = this.$route.query.group
   },
 
   methods: {
@@ -99,15 +91,15 @@ export default {
           return;
         } else {
           if (that.form.delivery) {
-            that.batchAddBranch(that.form.group, that.form.branchs);
+            that.batchAddBranch(that.$route.query.group, that.form.branchs);
           } else {
             that.addBranch(
-              that.form.group,
+              that.$route.query.group,
               that.form.branch.replace(/(^\s*)|(\s*$)/g, "")
             );
           }
           that.$message({
-            type: "success",
+            type: "success",duration: 1000,
             message: "添加成功"
           });
           that.$bus.emit("init-group");

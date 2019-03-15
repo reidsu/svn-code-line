@@ -20,27 +20,39 @@
           <div class="svn-group__item">
             <p class="svn-group__name">{{item.name}}</p>
             <div class="svn-group__operate">
-              <a
-                @click="updateGroup(item.name, $event)"
-                class="svn-group__btn"
-                href="javascript:void(0);"
-              >
-                <i class="el-icon-edit"></i>
-              </a>
-              <a
-                @click="delGroup(item.name, $event)"
-                class="svn-group__btn"
-                href="javascript:void(0);"
-              >
-                <i class="el-icon-delete"></i>
-              </a>
+              <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
+                <a
+                  @click="updateGroup(item.name, $event)"
+                  class="svn-group__btn"
+                  href="javascript:void(0);"
+                >
+                  <i class="el-icon-edit"></i>
+                </a>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
+                <a
+                  @click="delGroup(item.name, $event)"
+                  class="svn-group__btn"
+                  href="javascript:void(0);"
+                >
+                  <i class="el-icon-delete"></i>
+                </a>
+              </el-tooltip>
             </div>
           </div>
         </li>
       </ul>
       <!-- 没有分支 -->
       <div v-else class="svn-empty">
-        <p class="svn-empty__info">暂未添加分组</p>
+        <div>
+          <p class="svn-empty__info">暂无分组, 请在右上角添加分组</p>
+          <p
+            class="svn-empty__info"
+            :style="{display: 'block'}" 
+          >
+          分组是用来管理一个jira单子上的所有项目的分支
+          </p>
+        </div>
       </div>
     </div>
     <router-view></router-view>
@@ -72,6 +84,7 @@ export default {
     },
     openGroup(name, e) {
       e.preventDefault();
+      e.stopPropagation()
       this.$router.push("branches?group=" + name);
     },
     // 添加分组
@@ -87,6 +100,7 @@ export default {
     // 编辑分组
     updateGroup(name, e) {
       e.preventDefault();
+      e.stopPropagation()
       this.$router.push({
         name: "editManage",
         params: {
@@ -99,6 +113,7 @@ export default {
     // 删除分组
     delGroup(name, e) {
       e.preventDefault();
+      e.stopPropagation()
       const that = this;
       this.$confirm("此操作将删除该分组及分组里面的svn路径", "提示", {
         confirmButtonText: "确定",
@@ -114,7 +129,8 @@ export default {
           window.localStorage.setItem("groups", JSON.stringify(groups));
           that.$message({
             type: "success",
-            message: "删除成功!"
+            message: "删除成功!",
+            duration: 1000,
           });
           that.getGroups();
         })

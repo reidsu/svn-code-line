@@ -99,7 +99,7 @@ export default {
             that.addBranch(that.form.group, that.form.branch.replace(/(^\s*)|(\s*$)/g, ""));
           }
           that.$message({
-            type: "success",
+            type: "success",duration: 1000,
             message: "添加成功",
           });
           that.$bus.emit("init-group");
